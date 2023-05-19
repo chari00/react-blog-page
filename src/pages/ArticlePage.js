@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import articles from './articleContent';
+import PageNotFound from './PageNotFound'
 
 
 export default function ArticlePage () {
@@ -7,10 +8,14 @@ export default function ArticlePage () {
     const {articleId} =useParams();
     const article = articles.find(article => article.name === articleId);
 
+    if (!article) {
+        return <PageNotFound/>
+    }
+
     return (
         <>
         <h3>{article.title}</h3>
         {article.content.map(paragraph => (<p key ={paragraph}>{paragraph}</p>))}
         </>
     )
-}
+};
