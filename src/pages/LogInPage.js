@@ -1,18 +1,29 @@
 import {useState} from 'react';
-import Link from 'react-router-dom';
-
+import {Link, useNavigate} from 'react-router-dom';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
 export default function LogInPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    
+    const LogIn = async () => {
+        try {
+            await signInWithEmailAndPassword(getAuth(), email, password);
+        } catch (error) {
+            setError(error.message);
+        }
+
+    }
+
     return (
         <>
         <h1>Login  Account</h1>
+        {error && <p> {error}</p>}
         <input type='email' value={email} placeholder='your email address' onChange={e => setEmail(e.target.value)}/>
         <input type='password' value={password} placeholder='your password' onChange={e =>setPassword (e.target.value)}/>
-        <button>Log In</button>
+        <button onClick={LogIn}>Log In</button>
         <Link to='/CreateAcct'>create account</Link>
         
         </>
