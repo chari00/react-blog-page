@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
+import useUser from "../hooks/useUser";
 
 
 export default function ArticlePage () {
     const [articleInfo, setArticleInfo] = useState({upvotes:0, Comments:[]});
      const {articleId} =useParams();
+     const {user, isLoading} = useUser();
 
     useEffect(() => {
         const loadArticleInfo = async () => {
@@ -39,10 +41,15 @@ export default function ArticlePage () {
     return (
         <>
         <h3>{article.title}</h3>
-        <button onClick={addUpvote}>upvote</button>
+        {/* //if user is not logged in, instead of displaying upvote button, display a button login to upvote  */}
+        {user ? <button onClick={addUpvote}>upvote</button> : <button>Log in to upvote</button>}
+        
         <p> This article has {articleInfo.upvotes} upvotes</p>
         {article.content.map((paragraph, i)=> (<p key ={i}>{paragraph}</p>))}
-        <AddCommentForm articleName={articleId} onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)}/>
+
+        {/* //hide the comment form if user is not logged in, display a button login to write a comment  */}
+        {user ? <AddCommentForm articleName={articleId} onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)}/> : <button> log in to write comment </button>}
+        
         <CommentsList comments={articleInfo.comments}/>
         </>
     );
