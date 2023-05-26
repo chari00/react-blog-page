@@ -8,9 +8,10 @@ export default function LogInPage() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const LogIn = async () => {
+    const logIn = async () => {
         try {
             await signInWithEmailAndPassword(getAuth(), email, password);
+            navigate('/articles');
         } catch (error) {
             setError(error.message);
         }
@@ -23,7 +24,7 @@ export default function LogInPage() {
         {error && <p> {error}</p>}
         <input type='email' value={email} placeholder='your email address' onChange={e => setEmail(e.target.value)}/>
         <input type='password' value={password} placeholder='your password' onChange={e =>setPassword (e.target.value)}/>
-        <button onClick={LogIn}>Log In</button>
+        <button onClick={logIn}>Log In</button>
         <Link to='/CreateAcct'>create account</Link>
         
         </>
