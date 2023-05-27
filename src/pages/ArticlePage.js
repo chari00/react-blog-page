@@ -23,7 +23,7 @@ export default function ArticlePage () {
             setArticleInfo(newArticleInfo);
         }
         //load article info if the user is logged in
-        if (isLoading) {
+        if (!isLoading) {
             loadArticleInfo();
         }
         },[isLoading, user]);
